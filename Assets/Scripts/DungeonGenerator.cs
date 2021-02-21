@@ -18,6 +18,7 @@ public class DungeonGenerator : MonoBehaviour {
     int countFeatures;
 
     public bool isASCII;
+
     public List<Feature> allFeatures;
 
     public void InitializeDungeon() {
@@ -29,15 +30,20 @@ public class DungeonGenerator : MonoBehaviour {
 
         for (int i = 0; i < 500; i++) {
             Feature originFeature;
+
             if (allFeatures.Count == 1) {
                 originFeature = allFeatures[0];
             } else {
                 originFeature = allFeatures[Random.Range(0, allFeatures.Count - 1)];
             }
-            Wall wall = ChoseWall(originFeature);
+
+            Wall wall = null;
+
+            wall = ChoseWall(originFeature);
             if (wall == null) continue;
 
             string type;
+
             if (originFeature.type == "Room") {
                 type = "Corridor";
             } else {
@@ -50,8 +56,9 @@ public class DungeonGenerator : MonoBehaviour {
 
             GenerateFeature(type, wall);
 
-            if (countFeatures >= maxFeatures) break;
+            if (countFeatures == maxFeatures) break;
         }
+
         DrawMap(isASCII);
     }
 
@@ -83,6 +90,7 @@ public class DungeonGenerator : MonoBehaviour {
                     roomWidth = Random.Range(minCorridorLength, maxCorridorLength);
                     roomHeight = 3;
                     break;
+
             }
         }
 
@@ -118,22 +126,20 @@ public class DungeonGenerator : MonoBehaviour {
                     else xStartingPoint--;
                     yStartingPoint++;
                     break;
-                case "East":
-                    xStartingPoint++;
+                case "West":
+                    xStartingPoint -= roomWidth;
                     if (type == "Room") yStartingPoint -= Random.Range(1, roomHeight - 2);
                     else yStartingPoint--;
                     break;
-                case "West":
-                    xStartingPoint -= roomWidth;
+                case "East":
+                    xStartingPoint++;
                     if (type == "Room") yStartingPoint -= Random.Range(1, roomHeight - 2);
                     else yStartingPoint--;
                     break;
             }
         }
 
-        if (!CheckIfHasSpace(new Vector2Int(xStartingPoint, yStartingPoint), new Vector2Int(xStartingPoint + roomWidth - 1, yStartingPoint + mapHeight - 1))) {
-            return;
-        }
+        if (!CheckIfHasSpace(new Vector2Int(xStartingPoint, yStartingPoint), new Vector2Int(xStartingPoint + roomWidth - 1, yStartingPoint + roomHeight - 1))) return;
 
         room.walls = new Wall[4];
 
@@ -222,13 +228,18 @@ public class DungeonGenerator : MonoBehaviour {
     }
 
     bool CheckIfHasSpace(Vector2Int start, Vector2Int end) {
+        bool hasSpace = true;
+
         for (int y = start.y; y <= end.y; y++) {
             for (int x = start.x; x <= end.x; x++) {
                 if (x < 0 || y < 0 || x >= mapWidth || y >= mapHeight) return false;
-                if (MapManager.map[x, y]!= null) return false;
+                if (MapManager.map[x, y] != null) {
+                    return false;
+                }
             }
         }
-        return true;
+
+        return hasSpace;
     }
 
     Wall ChoseWall(Feature feature) {
