@@ -17,14 +17,8 @@ public class Tile {
 }
 
 [Serializable]
-public class Position {
-    public int x;
-    public int y;
-}
-
-[Serializable]
 public class Wall {
-    public List<Position> positions;
+    public List<Vector2Int> positions;
     public string direction;
     public int length;
     public bool hasFeature = false;
@@ -32,7 +26,7 @@ public class Wall {
 
 [Serializable]
 public class Feature {
-    public List<Position> positions;
+    public List<Vector2Int> positions;
     public Wall[] walls;
     public string type;
     public int width;
