@@ -20,6 +20,9 @@ public class DungeonGenerator : MonoBehaviour {
     public bool isASCII;
 
     public List<Feature> allFeatures;
+    List<Feature> rooms;
+
+    public GameObject playerPrefab;
 
     public void InitializeDungeon() {
         MapManager.map = new Tile[mapWidth, mapHeight];
@@ -250,6 +253,39 @@ public class DungeonGenerator : MonoBehaviour {
             }
         }
         return null;
+    }
+
+    List<Feature> GetRooms() {
+        List<Feature> newRooms = new List<Feature>();
+
+        foreach (Feature feature in allFeatures) {
+            if (feature.type == "Room") {
+                newRooms.Add(feature);
+            }
+        }
+
+        return newRooms;
+    }
+
+    void SpawnPlayer() {
+        Feature room = rooms[Random.Range(0, rooms.Count - 1)];
+
+        List<Vector2Int> positions = new List<Vector2Int>();
+
+        foreach(Vector2Int position in room.positions) {
+            if (MapManager.map[position.x, position.y].type == "Floor") {
+                positions.Add(position);
+            }
+        }
+
+        Vector2Int pos = positions[Random.Range(0, positions.Count - 1)];
+
+        GameObject player = GameObject.Instantiate(playerPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+
+        player.GetComponent<PlayerMovement>().position - pos;
+        MapManager.map[pos.x, pos.y].hasPlayer = true;
+        room.hasPlayer = true;
+        GetComponent<GameManager>().player = player.GetComponent<PlayerMovement>();
     }
 
     void DrawMap(bool isASCII) {

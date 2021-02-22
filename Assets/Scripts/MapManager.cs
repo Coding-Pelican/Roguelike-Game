@@ -14,6 +14,7 @@ public class Tile {
     [NonSerialized]
     public GameObject baseObject;   //  a floot, a wall, Etc...
     public string type;
+    public bool hasPlayer = false;
 }
 
 [Serializable]
@@ -31,4 +32,5 @@ public class Feature {
     public string type;
     public int width;
     public int height;
+    public bool hasPlayer = false;
 }
