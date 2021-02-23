@@ -153,6 +153,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7b5c5d781a091c40b5006002d96ad03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  isPlayerTurn: 0
 --- !u!4 &423191884
 Transform:
   m_ObjectHideFlags: 0
@@ -179,15 +181,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74a4c9e6572c73b4594b140fa191f9ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapWidth: 75
-  mapHeight: 75
-  widthMinRoom: 6
-  widthMaxRoom: 10
+  mapWidth: 100
+  mapHeight: 60
+  widthMinRoom: 4
+  widthMaxRoom: 24
   heightMinRoom: 4
-  heightMaxRoom: 10
-  minCorridorLength: 6
-  maxCorridorLength: 8
-  maxFeatures: 50
+  heightMaxRoom: 24
+  minCorridorLength: 4
+  maxCorridorLength: 16
+  maxFeatures: 100
   isASCII: 1
   allFeatures: []
   playerPrefab: {fileID: 4040813085051902103, guid: 3c8c7792c6b20c54b9f20ccc686697ec, type: 3}
