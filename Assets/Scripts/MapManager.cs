@@ -15,6 +15,7 @@ public class Tile {
     public GameObject baseObject;   //  a floot, a wall, Etc...
     public string type;
     public bool hasPlayer = false;
+    public bool isWalkable = false;
 }
 
 [Serializable]
@@ -23,6 +24,7 @@ public class Wall {
     public string direction;
     public int length;
     public bool hasFeature = false;
+    public Feature parent;
 }
 
 [Serializable]
@@ -32,5 +34,6 @@ public class Feature {
     public string type;
     public int width;
     public int height;
+    public int id;
     public bool hasPlayer = false;
 }

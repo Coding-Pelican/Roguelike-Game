@@ -62,6 +62,9 @@ public class DungeonGenerator : MonoBehaviour {
             if (countFeatures == maxFeatures) break;
         }
 
+        rooms = GetRooms();
+        SpawnPlayer();
+
         DrawMap(isASCII);
     }
 
@@ -93,7 +96,6 @@ public class DungeonGenerator : MonoBehaviour {
                     roomWidth = Random.Range(minCorridorLength, maxCorridorLength);
                     roomHeight = 3;
                     break;
-
             }
         }
 
@@ -107,7 +109,8 @@ public class DungeonGenerator : MonoBehaviour {
             int id;
             if (wall.positions.Count == 3) id = 1;
             else id = Random.Range(1, wall.positions.Count - 2);
-
+            if (id < 1) id = 1;
+            if (id > wall.positions.Count - 2) id = wall.positions.Count - 2;
             xStartingPoint = wall.positions[id].x;
             yStartingPoint = wall.positions[id].y;
         }
@@ -115,14 +118,14 @@ public class DungeonGenerator : MonoBehaviour {
         Vector2Int lastWallPosition = new Vector2Int(xStartingPoint, yStartingPoint);
 
         if (isFirst) {
-            xStartingPoint -= Random.Range(1, roomWidth);
-            yStartingPoint -= Random.Range(1, roomHeight);
+            xStartingPoint -= Random.Range(0, roomWidth - 1);
+            yStartingPoint -= Random.Range(0, roomHeight - 1);
         } else {
             switch (wall.direction) {
                 case "South":
                     if (type == "Room") xStartingPoint -= Random.Range(1, roomWidth - 2);
                     else xStartingPoint--;
-                    yStartingPoint -= Random.Range(1, roomHeight - 2);
+                    yStartingPoint -= roomHeight;
                     break;
                 case "North":
                     if (type == "Room") xStartingPoint -= Random.Range(1, roomWidth - 2);
@@ -150,6 +153,7 @@ public class DungeonGenerator : MonoBehaviour {
             room.walls[i] = new Wall();
             room.walls[i].positions = new List<Vector2Int>();
             room.walls[i].length = 0;
+            room.walls[i].parent = room;
 
             switch (i) {
                 case 0:
@@ -201,24 +205,30 @@ public class DungeonGenerator : MonoBehaviour {
                 }
                 if (MapManager.map[position.x, position.y].type != "Wall") {
                     MapManager.map[position.x, position.y].type = "Floor";
+                    MapManager.map[position.x, position.y].isWalkable = true;
                 }
             }
         }
 
         if (!isFirst) {
             MapManager.map[lastWallPosition.x, lastWallPosition.y].type = "Floor";
+            MapManager.map[lastWallPosition.x, lastWallPosition.y].isWalkable = true;
             switch (wall.direction) {
                 case "South":
                     MapManager.map[lastWallPosition.x, lastWallPosition.y - 1].type = "Floor";
+                    MapManager.map[lastWallPosition.x, lastWallPosition.y - 1].isWalkable = true;
                     break;
                 case "North":
                     MapManager.map[lastWallPosition.x, lastWallPosition.y + 1].type = "Floor";
+                    MapManager.map[lastWallPosition.x, lastWallPosition.y + 1].isWalkable = true;
                     break;
                 case "West":
                     MapManager.map[lastWallPosition.x - 1, lastWallPosition.y].type = "Floor";
+                    MapManager.map[lastWallPosition.x - 1, lastWallPosition.y].isWalkable = true;
                     break;
                 case "East":
                     MapManager.map[lastWallPosition.x + 1, lastWallPosition.y].type = "Floor";
+                    MapManager.map[lastWallPosition.x + 1, lastWallPosition.y].isWalkable = true;
                     break;
             }
         }
@@ -226,6 +236,7 @@ public class DungeonGenerator : MonoBehaviour {
         room.width = roomWidth;
         room.height = roomHeight;
         room.type = type;
+        room.id = countFeatures;
         allFeatures.Add(room);
         countFeatures++;
     }
@@ -288,7 +299,7 @@ public class DungeonGenerator : MonoBehaviour {
         GetComponent<GameManager>().player = player.GetComponent<PlayerMovement>();
     }
 
-    void DrawMap(bool isASCII) {
+    public void DrawMap(bool isASCII) {
         if (isASCII) {
             Text screen = GameObject.Find("ASCIITest").GetComponent<Text>();
 
@@ -297,13 +308,17 @@ public class DungeonGenerator : MonoBehaviour {
             for (int y = (mapHeight - 1); y >= 0; y--) {
                 for (int x = 0; x < mapWidth; x++) {
                     if (MapManager.map[x, y] != null) {
-                        switch (MapManager.map[x, y].type) {
-                            case "Wall":
-                                asciiMap += "#";
-                                break;
-                            case "Floor":
-                                asciiMap += ".";
-                                break;
+                        if (MapManager.map[x, y].hasPlayer) {
+                            asciiMap += "@";
+                        } else {
+                            switch (MapManager.map[x, y].type) {
+                                case "Wall":
+                                    asciiMap += "#";
+                                    break;
+                                case "Floor":
+                                    asciiMap += ".";
+                                    break;
+                            }
                         }
                     } else {
                         asciiMap += " ";
