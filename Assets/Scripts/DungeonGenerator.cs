@@ -272,7 +272,7 @@ public class DungeonGenerator : MonoBehaviour {
 
         List<Vector2Int> positions = new List<Vector2Int>();
 
-        foreach(Vector2Int position in room.positions) {
+        foreach (Vector2Int position in room.positions) {
             if (MapManager.map[position.x, position.y].type == "Floor") {
                 positions.Add(position);
             }
@@ -282,7 +282,7 @@ public class DungeonGenerator : MonoBehaviour {
 
         GameObject player = GameObject.Instantiate(playerPrefab, new Vector3(0, 0, 0), Quaternion.identity);
 
-        player.GetComponent<PlayerMovement>().position - pos;
+        player.GetComponent<PlayerMovement>().position = pos;
         MapManager.map[pos.x, pos.y].hasPlayer = true;
         room.hasPlayer = true;
         GetComponent<GameManager>().player = player.GetComponent<PlayerMovement>();
