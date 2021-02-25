@@ -22,6 +22,26 @@ public class FoV {
         }
     }
 
+    static public void GetPlayerFoV(Vector2Int position) {
+        for (int y = 0; y < GameObject.Find("GameManager").GetComponent<DungeonGenerator>().mapHeight; y++) {
+            for (int x = 0; x < GameObject.Find("GameManager").GetComponent<DungeonGenerator>().mapWidth; x++) {
+                if (MapManager.map[x, y] != null) {
+                    MapManager.map[x, y].isVisible = false;
+                }
+            }
+        }
+
+        foreach (Vector2Int borderTile in borderTiles) {
+            foreach (Vector2Int cell in GetCellsAlongLine(position, position + borderTile)) {
+                MapManager.map[cell.x, cell.y].isVisible = true;
+                MapManager.map[cell.x, cell.y].isExplored = true;
+                if (MapManager.map[cell.x, cell.y].isOpaque) {
+                    break;
+                }
+            }
+        }
+    }
+
     static List<Vector2Int> GetCellsAlongLine(Vector2Int origin, Vector2Int destination) {
         List<Vector2Int> cells = new List<Vector2Int>();
 
