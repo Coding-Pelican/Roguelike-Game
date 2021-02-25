@@ -16,6 +16,11 @@ public class Tile {
     public string type;
     public bool hasPlayer = false;
     public bool isWalkable = false;
+    public string baseChar;
+    public string secondChar = "";
+    public bool isOpaque = false;
+    public bool isVisible = false;
+    public bool isExplored = false;
 }
 
 [Serializable]

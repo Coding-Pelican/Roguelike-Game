@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour {
         dungeonGenerator.InitializeDungeon();
         dungeonGenerator.GenerateDungeon();
 
+        FoV.Initialize();
+
         FirstTurn();
     }
 

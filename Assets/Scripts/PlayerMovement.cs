@@ -49,8 +49,10 @@ public class PlayerMovement : MonoBehaviour {
     void Move(Vector2Int target) {
         if (MapManager.map[target.x, target.y].isWalkable) {
             MapManager.map[position.x, position.y].hasPlayer = false;
+            MapManager.map[position.x, position.y].secondChar = "";
             position = target;
             MapManager.map[position.x, position.y].hasPlayer = true;
+            MapManager.map[position.x, position.y].secondChar = "@";
         }
 
         manager.FinishPlayersTurn();

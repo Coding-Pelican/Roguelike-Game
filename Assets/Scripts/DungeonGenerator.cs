@@ -187,24 +187,33 @@ public class DungeonGenerator : MonoBehaviour {
                     room.walls[0].positions.Add(position);
                     room.walls[0].length++;
                     MapManager.map[position.x, position.y].type = "Wall";
+                    MapManager.map[position.x, position.y].baseChar = "#";
+                    MapManager.map[position.x, position.y].isOpaque = true;
                 }
                 if (y == (roomHeight - 1)) {
                     room.walls[1].positions.Add(position);
                     room.walls[1].length++;
                     MapManager.map[position.x, position.y].type = "Wall";
+                    MapManager.map[position.x, position.y].baseChar = "#";
+                    MapManager.map[position.x, position.y].isOpaque = true;
                 }
                 if (x == 0) {
                     room.walls[2].positions.Add(position);
                     room.walls[2].length++;
                     MapManager.map[position.x, position.y].type = "Wall";
+                    MapManager.map[position.x, position.y].baseChar = "#";
+                    MapManager.map[position.x, position.y].isOpaque = true;
                 }
                 if (x == (roomWidth - 1)) {
                     room.walls[3].positions.Add(position);
                     room.walls[3].length++;
                     MapManager.map[position.x, position.y].type = "Wall";
+                    MapManager.map[position.x, position.y].baseChar = "#";
+                    MapManager.map[position.x, position.y].isOpaque = true;
                 }
                 if (MapManager.map[position.x, position.y].type != "Wall") {
                     MapManager.map[position.x, position.y].type = "Floor";
+                    MapManager.map[position.x, position.y].baseChar = ".";
                     MapManager.map[position.x, position.y].isWalkable = true;
                 }
             }
@@ -213,22 +222,32 @@ public class DungeonGenerator : MonoBehaviour {
         if (!isFirst) {
             MapManager.map[lastWallPosition.x, lastWallPosition.y].type = "Floor";
             MapManager.map[lastWallPosition.x, lastWallPosition.y].isWalkable = true;
+            MapManager.map[lastWallPosition.x, lastWallPosition.y].baseChar = ".";
+            MapManager.map[lastWallPosition.x, lastWallPosition.y].isOpaque = false;
             switch (wall.direction) {
                 case "South":
                     MapManager.map[lastWallPosition.x, lastWallPosition.y - 1].type = "Floor";
                     MapManager.map[lastWallPosition.x, lastWallPosition.y - 1].isWalkable = true;
+                    MapManager.map[lastWallPosition.x, lastWallPosition.y - 1].baseChar = ".";
+                    MapManager.map[lastWallPosition.x, lastWallPosition.y - 1].isOpaque = false;
                     break;
                 case "North":
                     MapManager.map[lastWallPosition.x, lastWallPosition.y + 1].type = "Floor";
                     MapManager.map[lastWallPosition.x, lastWallPosition.y + 1].isWalkable = true;
+                    MapManager.map[lastWallPosition.x, lastWallPosition.y + 1].baseChar = ".";
+                    MapManager.map[lastWallPosition.x, lastWallPosition.y + 1].isOpaque = false;
                     break;
                 case "West":
                     MapManager.map[lastWallPosition.x - 1, lastWallPosition.y].type = "Floor";
                     MapManager.map[lastWallPosition.x - 1, lastWallPosition.y].isWalkable = true;
+                    MapManager.map[lastWallPosition.x - 1, lastWallPosition.y].baseChar = ".";
+                    MapManager.map[lastWallPosition.x - 1, lastWallPosition.y].isOpaque = false;
                     break;
                 case "East":
                     MapManager.map[lastWallPosition.x + 1, lastWallPosition.y].type = "Floor";
                     MapManager.map[lastWallPosition.x + 1, lastWallPosition.y].isWalkable = true;
+                    MapManager.map[lastWallPosition.x + 1, lastWallPosition.y].baseChar = ".";
+                    MapManager.map[lastWallPosition.x + 1, lastWallPosition.y].isOpaque = false;
                     break;
             }
         }
@@ -295,6 +314,7 @@ public class DungeonGenerator : MonoBehaviour {
 
         player.GetComponent<PlayerMovement>().position = pos;
         MapManager.map[pos.x, pos.y].hasPlayer = true;
+        MapManager.map[pos.x, pos.y].secondChar = "@";
         room.hasPlayer = true;
         GetComponent<GameManager>().player = player.GetComponent<PlayerMovement>();
     }
@@ -308,17 +328,10 @@ public class DungeonGenerator : MonoBehaviour {
             for (int y = (mapHeight - 1); y >= 0; y--) {
                 for (int x = 0; x < mapWidth; x++) {
                     if (MapManager.map[x, y] != null) {
-                        if (MapManager.map[x, y].hasPlayer) {
-                            asciiMap += "@";
+                        if (MapManager.map[x, y].secondChar == "") {
+                            asciiMap += MapManager.map[x, y].baseChar;
                         } else {
-                            switch (MapManager.map[x, y].type) {
-                                case "Wall":
-                                    asciiMap += "#";
-                                    break;
-                                case "Floor":
-                                    asciiMap += ".";
-                                    break;
-                            }
+                            asciiMap += MapManager.map[x, y].secondChar;
                         }
                     } else {
                         asciiMap += " ";
