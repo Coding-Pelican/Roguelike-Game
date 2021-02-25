@@ -334,9 +334,9 @@ public class DungeonGenerator : MonoBehaviour {
                 for (int x = 0; x < mapWidth; x++) {
                     if (MapManager.map[x, y] != null) {
                         if (MapManager.map[x, y].secondChar == "") {
-                            asciiMap += MapManager.map[x, y].baseChar;
+                            asciiMap += colorStep1 + MapManager.map[x,y].color + colorStep2 + MapManager.map[x, y].baseChar + colorStep3;
                         } else {
-                            asciiMap += MapManager.map[x, y].secondChar;
+                            asciiMap += colorStep1 + MapManager.map[x, y].color + colorStep2 + MapManager.map[x, y].secondChar + colorStep3;
                         }
                     } else {
                         asciiMap += " ";
