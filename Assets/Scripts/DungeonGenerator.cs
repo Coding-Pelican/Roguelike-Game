@@ -325,6 +325,11 @@ public class DungeonGenerator : MonoBehaviour {
 
             string asciiMap = "";
 
+            string colorStep1 = "<color=";
+            string colorStep2 = ">";
+            string colorStep3 = "</color>";
+
+
             for (int y = (mapHeight - 1); y >= 0; y--) {
                 for (int x = 0; x < mapWidth; x++) {
                     if (MapManager.map[x, y] != null) {

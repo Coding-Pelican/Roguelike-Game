@@ -42,6 +42,18 @@ public class FoV {
         }
     }
 
+    static public void VisibilityCheck(Vector2Int position) {
+        if (MapManager.map[position.x, position.y].isVisible) {
+            MapManager.map[position.x, position.y].color = "white";
+        } else {
+            if (MapManager.map[position.x, position.y].isExplored) {
+                MapManager.map[position.x, position.y].color = "grey";
+            } else {
+                MapManager.map[position.x, position.y].color = "black";
+            }
+        }
+    }
+
     static List<Vector2Int> GetCellsAlongLine(Vector2Int origin, Vector2Int destination) {
         List<Vector2Int> cells = new List<Vector2Int>();
 

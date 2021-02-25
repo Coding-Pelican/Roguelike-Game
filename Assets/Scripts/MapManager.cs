@@ -21,6 +21,7 @@ public class Tile {
     public bool isOpaque = false;
     public bool isVisible = false;
     public bool isExplored = false;
+    public string color = "black";
 }
 
 [Serializable]

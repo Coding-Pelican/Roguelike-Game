@@ -20,11 +20,17 @@ public class GameManager : MonoBehaviour {
     }
 
     public void FirstTurn() {
+        FoV.GetPlayerFoV(player.position);
+        UpdateVisibility();
+
         isPlayerTurn = true;
     }
 
     public void FinishPlayersTurn() {
         isPlayerTurn = false;
+
+        FoV.GetPlayerFoV(player.position);
+        UpdateVisibility();
 
         dungeonGenerator.DrawMap(true);
 
@@ -35,5 +41,15 @@ public class GameManager : MonoBehaviour {
         Debug.Log("Enemies' turn!");
 
         isPlayerTurn = true;
+    }
+
+    void UpdateVisibility() {
+        for (int y = 0; y < dungeonGenerator.mapHeight; y++) {
+            for (int x = 0; x < dungeonGenerator.mapWidth; x++) {
+                if (MapManager.map[x, y] != null) {
+                    FoV.VisibilityCheck(new Vector2Int(x, y));
+                }
+            }
+        }
     }
 }
