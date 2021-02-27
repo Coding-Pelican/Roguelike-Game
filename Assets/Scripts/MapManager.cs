@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class MapManager {
     public static Tile[,] map;
+    public static List<Enemy> enemies;
 }
 
 [Serializable]
@@ -22,6 +23,10 @@ public class Tile {
     public bool isVisible = false;
     public bool isExplored = false;
     public string color = "black";
+    public bool hasEnemy = false;
+    public int enemyID = -1;
+    [NonSerialized]
+    public GameObject enemyObject;
 }
 
 [Serializable]
@@ -42,4 +47,10 @@ public class Feature {
     public int height;
     public int id;
     public bool hasPlayer = false;
+}
+
+[Serializable]
+public class Enemy {
+    public Vector2Int position;
+    public string name;
 }

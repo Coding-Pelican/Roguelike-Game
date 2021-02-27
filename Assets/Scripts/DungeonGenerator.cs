@@ -17,6 +17,9 @@ public class DungeonGenerator : MonoBehaviour {
     public int maxFeatures;
     int countFeatures;
 
+    public int minEnemies;
+    public int maxEnemies;
+
     public bool isASCII;
 
     public List<Feature> allFeatures;
@@ -31,6 +34,7 @@ public class DungeonGenerator : MonoBehaviour {
 
     public void InitializeDungeon() {
         MapManager.map = new Tile[mapWidth, mapHeight];
+        MapManager.enemies = new List<Enemy>();
     }
 
     public void GenerateDungeon() {
@@ -69,6 +73,7 @@ public class DungeonGenerator : MonoBehaviour {
 
         rooms = GetRooms();
         SpawnPlayer();
+        SpawnEnmies();
 
         DrawMap(isASCII);
     }
@@ -323,6 +328,34 @@ public class DungeonGenerator : MonoBehaviour {
         MapManager.map[pos.x, pos.y].secondChar = "@";
         room.hasPlayer = true;
         GetComponent<GameManager>().player = player.GetComponent<PlayerMovement>();
+    }
+
+    void SpawnEnmies() {
+        int quantity = Random.Range(minEnemies, maxEnemies);
+
+        for (int i = 0; i < quantity; i++) {
+            Feature room = rooms[Random.Range(0, rooms.Count - 1)];
+
+            while (room.hasPlayer) {
+                room = rooms[Random.Range(0, rooms.Count - 1)];
+            }
+
+            List<Vector2Int> positions = new List<Vector2Int>();
+
+            foreach (Vector2Int position in room.positions) {
+                if (MapManager.map[position.x, position.y].type == "Floor") {
+                    positions.Add(position);
+                }
+            }
+
+            Vector2Int pos = positions[Random.Range(0, positions.Count - 1)];
+
+            while (MapManager.map[pos.x, pos.y].hasEnemy) {
+                pos = positions[Random.Range(0, positions.Count - 1)];
+            }
+
+            GetComponent<EnemySpawn>().SpawnEnemy(pos, tileScaling);
+        }
     }
 
     public void DrawMap(bool isASCII) {

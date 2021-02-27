@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemiesData : MonoBehaviour
-{
+public class EnemiesData : MonoBehaviour {
     public Enemies[] enemies;
 }
 
