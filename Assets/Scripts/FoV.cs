@@ -1,6 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class FoV {
@@ -10,7 +10,7 @@ public class FoV {
         borderTiles = new List<Vector2Int>();
 
         Vector2Int vectorToAdd;
-        for (int i = -4; i < 4; i++) {
+        for (int i = -4; i <= 4; i++) {
             vectorToAdd = new Vector2Int(i, -4);
             if (!borderTiles.Contains(vectorToAdd)) borderTiles.Add(vectorToAdd);
             vectorToAdd = new Vector2Int(i, 4);
@@ -32,7 +32,9 @@ public class FoV {
         }
 
         foreach (Vector2Int borderTile in borderTiles) {
+            Debug.Log("border tile: " + borderTile);
             foreach (Vector2Int cell in GetCellsAlongLine(position, position + borderTile)) {
+                Debug.Log("Cells Along Line: " + cell);
                 MapManager.map[cell.x, cell.y].isVisible = true;
                 MapManager.map[cell.x, cell.y].isExplored = true;
                 if (MapManager.map[cell.x, cell.y].isOpaque) {
@@ -67,16 +69,17 @@ public class FoV {
         Vector2Int delta = new Vector2Int(
             Math.Abs(destination.x - origin.x),
             Math.Abs(destination.y - origin.y)
-            );
-
+        );
         Vector2Int step = new Vector2Int(
             origin.x < destination.x ? 1 : -1,
             origin.y < destination.y ? 1 : -1
-            );
+        );
         int err = delta.x - delta.y;
 
         while (true) {
             cells.Add(origin);
+            if (origin.x < 0 || origin.y < 0 || origin.x > mapWidth || origin.y > mapHeight)
+                break;
             if (MapManager.map[origin.x, origin.y] == null)
                 break;
             if (origin == destination)

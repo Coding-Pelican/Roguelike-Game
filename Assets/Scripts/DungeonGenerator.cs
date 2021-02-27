@@ -368,10 +368,12 @@ public class DungeonGenerator : MonoBehaviour {
 
                         switch (MapManager.map[x, y].type) {
                             case "Wall":
+                                //newTile.GetComponent<SpriteRenderer>().sprite = walls[Random.Range(0, walls.Length - 1)];
                                 newTile.GetComponent<SpriteRenderer>().sprite = walls[Random.Range(0, walls.Length - 1)];
                                 break;
                             case "Floor":
-                                newTile.GetComponent<SpriteRenderer>().sprite = floors[Random.Range(0, floors.Length - 1)];
+                                //newTile.GetComponent<SpriteRenderer>().sprite = floors[Random.Range(0, floors.Length - 1)];
+                                newTile.GetComponent<SpriteRenderer>().sprite = floors[Random.Range(3, 7)];
                                 break;
                         }
 
