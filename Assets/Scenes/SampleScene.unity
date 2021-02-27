@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 423191884}
   - component: {fileID: 423191883}
   - component: {fileID: 423191885}
+  - component: {fileID: 423191886}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -213,6 +214,31 @@ MonoBehaviour:
   - {fileID: 3717234934733402742, guid: ef017758adb896640a515527afa3eb1f, type: 3}
   - {fileID: -19541469844262669, guid: ef017758adb896640a515527afa3eb1f, type: 3}
   tileScaling: 1
+--- !u!114 &423191886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 423191882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d28bea2b3e1aa2f4ebda9f5d0358ea5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemies:
+  - name: Gnoll Knife
+    sprite: {fileID: 1253541561785196395, guid: f6c0496cf93089b4b85a27e21fd4dcb0, type: 3}
+    spawnChance: 100
+  - name: Gnoll Sword
+    sprite: {fileID: 4496325136384798312, guid: f6c0496cf93089b4b85a27e21fd4dcb0, type: 3}
+    spawnChance: 60
+  - name: Zombie
+    sprite: {fileID: -8327233466685168767, guid: f6c0496cf93089b4b85a27e21fd4dcb0, type: 3}
+    spawnChance: 55
+  - name: Skeleton
+    sprite: {fileID: -5457319119036633666, guid: f6c0496cf93089b4b85a27e21fd4dcb0, type: 3}
+    spawnChance: 20
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
