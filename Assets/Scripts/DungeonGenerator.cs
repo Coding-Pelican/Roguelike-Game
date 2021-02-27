@@ -24,6 +24,11 @@ public class DungeonGenerator : MonoBehaviour {
 
     public GameObject playerPrefab;
 
+    public Sprite[] walls;
+    public Sprite[] floors;
+
+    public float tileScaling = 1f;
+
     public void InitializeDungeon() {
         MapManager.map = new Tile[mapWidth, mapHeight];
     }
@@ -311,6 +316,7 @@ public class DungeonGenerator : MonoBehaviour {
         Vector2Int pos = positions[Random.Range(0, positions.Count - 1)];
 
         GameObject player = GameObject.Instantiate(playerPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        player.transform.position = new Vector3(pos.x * tileScaling, pos.y * tileScaling, -1);
 
         player.GetComponent<PlayerMovement>().position = pos;
         MapManager.map[pos.x, pos.y].hasPlayer = true;
@@ -334,7 +340,7 @@ public class DungeonGenerator : MonoBehaviour {
                 for (int x = 0; x < mapWidth; x++) {
                     if (MapManager.map[x, y] != null) {
                         if (MapManager.map[x, y].secondChar == "") {
-                            asciiMap += colorStep1 + MapManager.map[x,y].color + colorStep2 + MapManager.map[x, y].baseChar + colorStep3;
+                            asciiMap += colorStep1 + MapManager.map[x, y].color + colorStep2 + MapManager.map[x, y].baseChar + colorStep3;
                         } else {
                             asciiMap += colorStep1 + MapManager.map[x, y].color + colorStep2 + MapManager.map[x, y].secondChar + colorStep3;
                         }
@@ -349,6 +355,35 @@ public class DungeonGenerator : MonoBehaviour {
             }
 
             screen.text = asciiMap;
+        } else {
+            GameObject parent = GameObject.Find("MapHolder");
+
+            for (int y = 0; y < mapHeight; y++) {
+                for (int x = 0; x < mapWidth; x++) {
+                    if (MapManager.map[x, y] != null) {
+                        GameObject newTile = new GameObject();
+
+                        newTile.AddComponent<SpriteRenderer>();
+                        newTile.AddComponent<TileInfo>();
+
+                        switch (MapManager.map[x, y].type) {
+                            case "Wall":
+                                newTile.GetComponent<SpriteRenderer>().sprite = walls[Random.Range(0, walls.Length - 1)];
+                                break;
+                            case "Floor":
+                                newTile.GetComponent<SpriteRenderer>().sprite = floors[Random.Range(0, floors.Length - 1)];
+                                break;
+                        }
+
+                        newTile.transform.position = new Vector3(x * tileScaling, y * tileScaling, 0);
+                        newTile.transform.parent = parent.transform;
+                        newTile.name = MapManager.map[x, y].type;
+
+                        MapManager.map[x, y].baseObject = newTile;
+                        newTile.GetComponent<TileInfo>().Initialize(new Vector2Int(x, y));
+                    }
+                }
+            }
         }
     }
 }

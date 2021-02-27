@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour {
         FoV.GetPlayerFoV(player.position);
         UpdateVisibility();
 
-        dungeonGenerator.DrawMap(true);
+        //dungeonGenerator.DrawMap(true);
 
         EnemyTurn();
     }

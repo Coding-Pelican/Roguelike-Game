@@ -6,9 +6,11 @@ public class PlayerMovement : MonoBehaviour {
     public Vector2Int position;
 
     GameManager manager;
+    DungeonGenerator dungeon;
 
     private void Start() {
         manager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        dungeon = GameObject.Find("GameManager").GetComponent<DungeonGenerator>();
     }
 
     private void Update() {
@@ -53,6 +55,8 @@ public class PlayerMovement : MonoBehaviour {
             position = target;
             MapManager.map[position.x, position.y].hasPlayer = true;
             MapManager.map[position.x, position.y].secondChar = "@";
+
+            transform.position = new Vector3(position.x * dungeon.tileScaling, position.y * dungeon.tileScaling, transform.position.z);
         }
 
         manager.FinishPlayersTurn();

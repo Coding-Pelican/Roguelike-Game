@@ -52,6 +52,7 @@ public class FoV {
                 MapManager.map[position.x, position.y].color = "black";
             }
         }
+        MapManager.map[position.x, position.y].baseObject.GetComponent<TileInfo>().UpdateVisibility();
     }
 
     static List<Vector2Int> GetCellsAlongLine(Vector2Int origin, Vector2Int destination) {
